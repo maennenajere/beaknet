@@ -6,6 +6,9 @@ export default function Header() {
             <h1 className="text-5xl font-extrabold tracking-tight text-gray-100">
                 BeakNet
             </h1>
+            <span className="text-sm font-semibold text-gray-400 ml-2">
+                Alpha v0.0.1
+            </span>
         </header>
     );
 }
