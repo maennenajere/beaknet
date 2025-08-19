@@ -6,7 +6,7 @@ export default function Footer() {
 
     return (
         <footer className="w-full flex items-center justify-center py-4 bg-black text-gray-400 border-t border-gray-800">
-            © {currentYear} beaknet. Kaikki oikeudet pidätetään.
+            © {currentYear} Beaky. Kaikki oikeudet pidätetään.
         </footer>
     );
 }

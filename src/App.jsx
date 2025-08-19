@@ -2,17 +2,15 @@ import {
   useState,
   useEffect
 } from "react";
+import MaintenancePage from "./components/maintenancePage";
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
 import { Skeleton } from "./components/ui/skeleton";
 import { Badge } from "./components/ui/badge";
 import { Card } from "./components/ui/card";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "./components/ui/alert";
-import { Terminal } from "lucide-react";
+import ChartDrawer from "./components/chartDrawer";
+import { Button } from "./components/ui/button";
+
 
 export default function Home() {
   const [indoorData, setIndoorData] = useState({ temperature: null, humidity: null });
@@ -20,6 +18,17 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [isTempLoading, setIsTempLoading] = useState(true);
   const [isLive, setIsLive] = useState(true);
+
+  useEffect(() => {
+    fetchSensorData();
+    const interval = setInterval(fetchSensorData, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isMaintenance = true;
+  if (isMaintenance) {
+    return <MaintenancePage />;
+  }
 
   const videoUrl = "/api/stream/video-stream";
 
@@ -50,12 +59,6 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    fetchSensorData();
-    const interval = setInterval(fetchSensorData, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <Header />
@@ -66,8 +69,9 @@ export default function Home() {
             style={{
               width: "100%",
               height: "100%",
+              alt: "Live video stream",
               objectFit: "cover",
-              backgroundColor: "gray",
+              backgroundColor: "#111111",
             }}
             onError={() => {
               setError("Videon lataus epäonnistui");
@@ -81,69 +85,58 @@ export default function Home() {
             {isLive ? "Live" : "Offline"}
           </Badge>
         </div>
+
         <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2 ">Sensoritiedot</h2>
-
-        <Alert variant="destructive" className="mb-4">
-          <Terminal />
-          <AlertTitle>Virhe!</AlertTitle>
-          <AlertDescription>
-            {error},
-          </AlertDescription>
-        </Alert>
-
-        {isTempLoading ? (
-          <div className="w-full flex flex-col gap-2 mt-1">
-            <Card className="w-full bg-neutral-800/80 border-neutral-800">
-              <div className="px-4 pb-4">
-                <p>
-                  <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> <Skeleton className="h-[20px] w-[100px] rounded-full inline-block align-middle ml-2" />
-                </p>
-                <span className="font-semibold text-gray-300">💧 Kosteus:</span> <Skeleton className="h-[20px] w-[100px] rounded-full inline-block align-middle ml-2" />
-              </div>
-            </Card>
-            <Card className="w-full bg-neutral-800/80 border-neutral-800">
-              <div className="px-4 pb-4">
-                <p>
-                  <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> <Skeleton className="h-[20px] w-[100px] rounded-full inline-block align-middle ml-2" />
-                </p>
-                <span className="font-semibold text-gray-300">💧 Kosteus:</span> <Skeleton className="h-[20px] w-[100px] rounded-full inline-block align-middle ml-2" />
-              </div>
-            </Card>
-          </div>
-        ) : (
-          <>
-            <Card className="mt-1 w-full bg-neutral-800/80 border-neutral-800">
-              <div className="px-4 pb-4">
-                <p>
-                  <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> {indoorData.temperature !== null ? (
-                    <span>
-                      <span className="text-gray-400">{indoorData.temperature}°C</span>, <span className="text-blue-300">{indoorData.humidity}%</span>
-                    </span>
-                  ) : <span className="text-gray-400">-</span>}
-                </p>
-                <span className="font-semibold text-gray-300">💧 Kosteus:</span> {indoorData.humidity !== null ? (
-                  <span className="text-blue-300">{indoorData.humidity}%</span>
-                ) : <span className="text-gray-400">-</span>}
-              </div>
-            </Card>
-            <Card className="mt-1 w-full bg-neutral-800/80 border-neutral-800">
-              <div className="px-4 pb-4">
-                <p>
-                  <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> {outdoorData.temperature !== null ? (
-                    <span>
-                      <span className="text-gray-400">{outdoorData.temperature}°C</span>,
-                    </span>
-                  ) : <span className="text-gray-400">-</span>}
-                </p>
-                <span className="font-semibold text-gray-300">💧 Kosteus:</span> {outdoorData.humidity !== null ? (
-                  <span className="text-blue-300">{outdoorData.humidity}%</span>
-                ) : <span className="text-gray-400">-</span>}
-              </div>
-            </Card>
-          </>
+        <div className="flex flex-col sm:flex-row gap-4 w-full mt-1">
+          <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
+            <div className="px-4 pb-4">
+              <p>
+                <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> {
+                  isTempLoading || error || indoorData.temperature === null
+                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    : <span className="text-gray-400">{indoorData.temperature}°C</span>
+                }
+              </p>
+              <p>
+                <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
+                  isTempLoading || error || indoorData.humidity === null
+                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    : <span className="text-blue-300">{indoorData.humidity}%</span>
+                }
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                {indoorData.timestamp ? `Päivitetty: ${new Date(indoorData.timestamp).toLocaleString()}` : <Skeleton className="h-[16px] w-[120px] rounded-full inline-block align-middle" />}
+              </p>
+            </div>
+          </Card>
+          <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
+            <div className="px-4 pb-4">
+              <p>
+                <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> {
+                  isTempLoading || error || outdoorData.temperature === null
+                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    : <span className="text-gray-400">{outdoorData.temperature}°C</span>
+                }
+              </p>
+              <p>
+                <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
+                  isTempLoading || error || outdoorData.humidity === null
+                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    : <span className="text-blue-300">{outdoorData.humidity}%</span>
+                }
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                {outdoorData.timestamp ? `Päivitetty: ${new Date(outdoorData.timestamp).toLocaleString()}` : <Skeleton className="h-[16px] w-[120px] rounded-full inline-block align-middle" />}
+              </p>
+            </div>
+          </Card>
+        </div>
+        {error && (
+          <p className="text-red-500 text-xs">{error}</p>
         )}
-      </main>
+        <ChartDrawer />
+      </main >
       <Footer />
-    </div>
+    </div >
   );
 }
