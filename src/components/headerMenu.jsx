@@ -18,7 +18,7 @@ export function HeaderMenu() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="bg-neutral-900 hover:bg-neutral-800 text-white font-semibold py-2 px-5 rounded-lg border border-neutral-700 shadow-md transition-colors duration-200">Open</Button>
+                <Button variant="outline" className="bg-neutral-900 hover:bg-yellow-100 text-white font-semibold py-2 px-5 rounded-lg border shadow-md transition-colors duration-200">Open</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
