@@ -1,11 +1,12 @@
 export async function onRequestGet(context) {
+  const baseUrl = context.env.PI_BASE_URL;
   try {
-    const response = await fetch(`${context.env.PI_BASE_URL}/video`, {
+    const response = await fetch(`${baseUrl}/video`, {
       headers: {
         "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
         "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,
       },
-    })
+    });
 
     return new Response(response.body, {
       headers: {
@@ -13,19 +14,15 @@ export async function onRequestGet(context) {
           response.headers.get("content-type") ||
           "multipart/x-mixed-replace; boundary=frame",
       },
-    })
+    });
+
   } catch (err) {
-    return new Response(
-      JSON.stringify({
-        error: "[api] Failed to fetch video stream",
-        details: err.message,
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    return new Response(JSON.stringify({
+      error: "[api] Failed to fetch video stream",
+      details: err.message,
+    }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

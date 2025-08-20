@@ -1,6 +1,7 @@
 export async function onRequestGet(context) {
+  const baseUrl = context.env.VITE_PI_BASE_URL;
   try {
-    const response = await fetch(`${context.env.PI_BASE_URL}/api/dht/indoor`, {
+    const response = await fetch(`${baseUrl}/api/dht/indoor`, {
       headers: {
         "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
         "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,
