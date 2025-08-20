@@ -56,7 +56,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [fetchSensorData]);
 
-  const isMaintenance = false;
+  const isMaintenance = true;
   if (isMaintenance) {
     return <MaintenancePage />;
   }
