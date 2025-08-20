@@ -1,6 +1,6 @@
-export async function onRequest(context) {
+export async function onRequestGet(context) {
   try {
-    const response = await fetch(`https://pi.beaknet.eu/api/dht/outdoor`, {
+    const response = await fetch(`${context.env.PI_BASE_URL}/api/dht/outdoor`, {
       headers: {
         "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
         "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,

@@ -1,6 +1,7 @@
-import {
+import React, {
   useState,
-  useEffect
+  useEffect,
+  useCallback
 } from "react";
 import MaintenancePage from "./components/maintenancePage";
 import ChartDrawer from "./components/chartDrawer";
@@ -9,7 +10,7 @@ import Footer from './components/footer.jsx';
 import { Skeleton } from "./components/ui/skeleton";
 import { Badge } from "./components/ui/badge";
 import { Card } from "./components/ui/card";
-import { Toaster } from 'sonner';
+import { Toaster, toast } from 'sonner';
 
 export default function Home() {
   const [indoorData, setIndoorData] = useState({ temperature: null, humidity: null });
@@ -18,20 +19,13 @@ export default function Home() {
   const [isTempLoading, setIsTempLoading] = useState(true);
   const [isLive, setIsLive] = useState(true);
 
-  useEffect(() => {
-    fetchSensorData();
-    const interval = setInterval(fetchSensorData, 60000);
-    return () => clearInterval(interval);
+  const showError = useCallback((message) => {
+    toast.error(message, {
+      duration: 5000,
+    });
   }, []);
 
-  const isMaintenance = true;
-  if (isMaintenance) {
-    return <MaintenancePage />;
-  }
-
-  const videoUrl = "/api/stream/video-stream";
-
-  async function fetchSensorData() {
+  const fetchSensorData = useCallback(async () => {
     setIsTempLoading(true);
     try {
       const indoorRes = await fetch("/api/dht/indoor");
@@ -41,7 +35,6 @@ export default function Home() {
         humidity: indoorJson.humidity.toFixed(1),
         timestamp: indoorJson.timestamp,
       });
-
       const outdoorRes = await fetch("/api/dht/outdoor");
       const outdoorJson = await outdoorRes.json();
       setOutdoorData({
@@ -51,12 +44,24 @@ export default function Home() {
       });
       setError(null);
     } catch (err) {
-      console.error("Virhe sensoreiden haussa:", err);
       setError("Ei saatu yhteyttä sensoreihin.");
-    } finally {
-      setIsTempLoading(false);
+      showError("Virhe sensoreiden haussa: " + err.message);
     }
+    setIsTempLoading(false);
+  }, [showError]);
+
+  useEffect(() => {
+    fetchSensorData();
+    const interval = setInterval(fetchSensorData, 60000);
+    return () => clearInterval(interval);
+  }, [fetchSensorData]);
+
+  const isMaintenance = false;
+  if (isMaintenance) {
+    return <MaintenancePage />;
   }
+
+  const videoUrl = "api/stream/video-stream";
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
@@ -65,15 +70,16 @@ export default function Home() {
         <div className="w-full aspect-video rounded-md overflow-hidden shadow flex flex-col justify-center items-center relative">
           <img
             src={videoUrl}
+            alt="Live video stream"
             style={{
               width: "100%",
               height: "100%",
-              alt: "Live video stream",
               objectFit: "cover",
-              backgroundColor: "#111111",
+              backgroundColor: "gray"
             }}
             onError={() => {
               setError("Videon lataus epäonnistui");
+              showError("Videon lataus epäonnistui");
               setIsLive(false);
             }}
             onLoad={() => setIsLive(true)}
@@ -84,7 +90,6 @@ export default function Home() {
             {isLive ? "Live" : "Offline"}
           </Badge>
         </div>
-
         <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2 ">Sensoritiedot</h2>
         <div className="flex flex-col sm:flex-row gap-4 w-full mt-1">
           <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
@@ -130,13 +135,10 @@ export default function Home() {
             </div>
           </Card>
         </div>
-        {error && (
-          <p className="text-red-500 text-xs">{error}</p>
-        )}
         <ChartDrawer />
-        <Toaster />
       </main >
       <Footer />
+      <Toaster />
     </div >
   );
 }
