@@ -1,6 +1,5 @@
 import BirdieLW from "../assets/logo/birdieLW.webp";
 import HeaderMenu from "./headerMenu";
-import { Menu } from 'lucide-react';
 
 export default function Header() {
     return (
@@ -12,10 +11,9 @@ export default function Header() {
             <span className="text-sm font-semibold text-gray-400 ml-2">
                 Alpha v0.0.1
             </span>
-            <button className=" mr-4">
-                <Menu className="text-gray-100" />
-            </button>
-            <HeaderMenu />
-        </header>
+            <div className="flex flex-col md:flex-row gap-4 ml-4">
+                <HeaderMenu />
+            </div>
+        </header >
     );
 }

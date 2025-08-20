@@ -3,14 +3,13 @@ import {
   useEffect
 } from "react";
 import MaintenancePage from "./components/maintenancePage";
+import ChartDrawer from "./components/chartDrawer";
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
 import { Skeleton } from "./components/ui/skeleton";
 import { Badge } from "./components/ui/badge";
 import { Card } from "./components/ui/card";
-import ChartDrawer from "./components/chartDrawer";
-import { Button } from "./components/ui/button";
-
+import { Toaster } from 'sonner';
 
 export default function Home() {
   const [indoorData, setIndoorData] = useState({ temperature: null, humidity: null });
@@ -135,6 +134,7 @@ export default function Home() {
           <p className="text-red-500 text-xs">{error}</p>
         )}
         <ChartDrawer />
+        <Toaster />
       </main >
       <Footer />
     </div >

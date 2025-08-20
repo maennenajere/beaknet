@@ -13,12 +13,14 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import SurveyButton from "./surveyButton";
+import { Menu } from 'lucide-react';
 
 export function HeaderMenu() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="bg-neutral-900 hover:bg-yellow-100 text-white font-semibold py-2 px-5 rounded-lg border shadow-md transition-colors duration-200">Open</Button>
+                <Menu className="w-7 h-7 text-white cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -64,9 +66,8 @@ export function HeaderMenu() {
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuItem disabled>API</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                <DropdownMenuItem className="flex justify-center items-center">
+                    <SurveyButton />
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
