@@ -15,40 +15,62 @@ import { Toaster, toast } from 'sonner';
 export default function Home() {
   const [indoorData, setIndoorData] = useState({ temperature: null, humidity: null });
   const [outdoorData, setOutdoorData] = useState({ temperature: null, humidity: null });
-  const [error, setError] = useState(null);
+  const [indoorError, setIndoorError] = useState(null);
+  const [outdoorError, setOutdoorError] = useState(null);
   const [isTempLoading, setIsTempLoading] = useState(true);
   const [isLive, setIsLive] = useState(true);
 
   const showError = useCallback((message) => {
     toast.error(message, {
       duration: 5000,
+      style: { background: "#ee3c3cff", color: "#ffffffff" },
     });
   }, []);
 
   const fetchSensorData = useCallback(async () => {
     setIsTempLoading(true);
+    setIndoorError(null);
+    setOutdoorError(null);
+    // Indoor fetch
     try {
       const indoorRes = await fetch("/api/dht/indoor");
-      const indoorJson = await indoorRes.json();
-      setIndoorData({
-        temperature: indoorJson.temperature.toFixed(1),
-        humidity: indoorJson.humidity.toFixed(1),
-        timestamp: indoorJson.timestamp,
-      });
-      const outdoorRes = await fetch("/api/dht/outdoor");
-      const outdoorJson = await outdoorRes.json();
-      setOutdoorData({
-        temperature: outdoorJson.temperature.toFixed(1),
-        humidity: outdoorJson.humidity.toFixed(1),
-        timestamp: outdoorJson.timestamp,
-      });
-      setError(null);
+      if (!indoorRes.ok) {
+        const err = await indoorRes.json();
+        setIndoorError(err.error || "Tuntematon virhe sisäanturissa");
+        setIndoorData({ temperature: null, humidity: null, timestamp: null });
+      } else {
+        const indoorJson = await indoorRes.json();
+        setIndoorData({
+          temperature: indoorJson.temperature?.toFixed(1),
+          humidity: indoorJson.humidity?.toFixed(1),
+          timestamp: indoorJson.timestamp,
+        });
+      }
     } catch (err) {
-      setError("Ei saatu yhteyttä sensoreihin.");
-      showError("Virhe sensoreiden haussa: " + err.message);
+      setIndoorError("Virhe sisäanturin haussa: " + err.message);
+      setIndoorData({ temperature: null, humidity: null, timestamp: null });
+    }
+    // Outdoor fetch
+    try {
+      const outdoorRes = await fetch("/api/dht/outdoor");
+      if (!outdoorRes.ok) {
+        const err = await outdoorRes.json();
+        setOutdoorError(err.error || "Tuntematon virhe ulkoanturissa");
+        setOutdoorData({ temperature: null, humidity: null, timestamp: null });
+      } else {
+        const outdoorJson = await outdoorRes.json();
+        setOutdoorData({
+          temperature: outdoorJson.temperature?.toFixed(1),
+          humidity: outdoorJson.humidity?.toFixed(1),
+          timestamp: outdoorJson.timestamp,
+        });
+      }
+    } catch (err) {
+      setOutdoorError("Virhe ulkoanturin haussa: " + err.message);
+      setOutdoorData({ temperature: null, humidity: null, timestamp: null });
     }
     setIsTempLoading(false);
-  }, [showError]);
+  }, []);
 
   useEffect(() => {
     fetchSensorData();
@@ -56,7 +78,15 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [fetchSensorData]);
 
-  const isMaintenance = true;
+  useEffect(() => {
+    if (indoorError) showError(indoorError);
+  }, [indoorError, showError]);
+
+  useEffect(() => {
+    if (outdoorError) showError(outdoorError);
+  }, [outdoorError, showError]);
+
+  const isMaintenance = false;
   if (isMaintenance) {
     return <MaintenancePage />;
   }
@@ -78,7 +108,6 @@ export default function Home() {
               backgroundColor: "gray"
             }}
             onError={() => {
-              setError("Videon lataus epäonnistui");
               showError("Videon lataus epäonnistui");
               setIsLive(false);
             }}
@@ -86,7 +115,10 @@ export default function Home() {
           />
         </div>
         <div className="w-full flex mt-2 mb-5">
-          <Badge variant={isLive ? "default" : "destructive"}>
+          <Badge
+            variant={isLive ? "default" : "destructive"}
+            className={isLive ? "bg-green-600 text-white" : ""}
+          >
             {isLive ? "Live" : "Offline"}
           </Badge>
         </div>
@@ -96,14 +128,14 @@ export default function Home() {
             <div className="px-4 pb-4">
               <p>
                 <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> {
-                  isTempLoading || error || indoorData.temperature === null
+                  isTempLoading || indoorData.temperature === null
                     ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
                     : <span className="text-gray-400">{indoorData.temperature}°C</span>
                 }
               </p>
               <p>
                 <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
-                  isTempLoading || error || indoorData.humidity === null
+                  isTempLoading || indoorData.humidity === null
                     ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
                     : <span className="text-blue-300">{indoorData.humidity}%</span>
                 }
@@ -117,14 +149,14 @@ export default function Home() {
             <div className="px-4 pb-4">
               <p>
                 <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> {
-                  isTempLoading || error || outdoorData.temperature === null
+                  isTempLoading || outdoorData.temperature === null
                     ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
                     : <span className="text-gray-400">{outdoorData.temperature}°C</span>
                 }
               </p>
               <p>
                 <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
-                  isTempLoading || error || outdoorData.humidity === null
+                  isTempLoading || outdoorData.humidity === null
                     ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
                     : <span className="text-blue-300">{outdoorData.humidity}%</span>
                 }
