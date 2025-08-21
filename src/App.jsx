@@ -31,7 +31,6 @@ export default function Home() {
     setIsTempLoading(true);
     setIndoorError(null);
     setOutdoorError(null);
-    // Indoor fetch
     try {
       const indoorRes = await fetch("/api/dht/indoor");
       if (!indoorRes.ok) {
@@ -50,7 +49,6 @@ export default function Home() {
       setIndoorError("Virhe sisäanturin haussa: " + err.message);
       setIndoorData({ temperature: null, humidity: null, timestamp: null });
     }
-    // Outdoor fetch
     try {
       const outdoorRes = await fetch("/api/dht/outdoor");
       if (!outdoorRes.ok) {
@@ -86,7 +84,7 @@ export default function Home() {
     if (outdoorError) showError(outdoorError);
   }, [outdoorError, showError]);
 
-  const isMaintenance = false;
+  const isMaintenance = true;
   if (isMaintenance) {
     return <MaintenancePage />;
   }
