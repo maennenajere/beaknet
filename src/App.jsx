@@ -84,7 +84,7 @@ export default function Home() {
     if (outdoorError) showError(outdoorError);
   }, [outdoorError, showError]);
 
-  const isMaintenance = true;
+  const isMaintenance = false;
   if (isMaintenance) {
     return <MaintenancePage />;
   }

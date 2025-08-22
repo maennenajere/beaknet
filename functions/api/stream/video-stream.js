@@ -1,6 +1,6 @@
 export async function onRequestGet(context) {
-  const baseUrl = "https://pi.beaknet.eu";
   try {
+    const baseUrl = context.env.PI_BASE_URL;
     const response = await fetch(`${baseUrl}/video`, {
       headers: {
         "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
