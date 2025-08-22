@@ -84,7 +84,7 @@ export default function Home() {
     if (outdoorError) showError(outdoorError);
   }, [outdoorError, showError]);
 
-  const isMaintenance = false;
+  const isMaintenance = import.meta.env.VITE_MAINTENANCE_MODE === "true";
   if (isMaintenance) {
     return <MaintenancePage />;
   }
