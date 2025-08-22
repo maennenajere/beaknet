@@ -7,8 +7,14 @@ export async function onRequestGet(context) {
         "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,
       },
     });
+    const contentType = response.headers.get("content-type") || "";
     if (!response.ok) {
-      throw new Error(`[api] Error: ${response.status}`);
+      const text = await response.text();
+      throw new Error(`[api] Error: ${response.status} - ${text}`);
+    }
+    if (!contentType.includes("application/json")) {
+      const text = await response.text();
+      throw new Error(`[api] Unexpected content-type: ${contentType}. Body: ${text}`);
     }
     const data = await response.json();
     return new Response(JSON.stringify(data), {
