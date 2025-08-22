@@ -3,9 +3,8 @@ export async function onRequestGet(context) {
     const baseUrl = context.env.PI_BASE_URL;
     const response = await fetch(`${baseUrl}/video`, {
       headers: {
-        "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
-        "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,
-      },
+        "CF-Access-Jwt-Assertion": context.env.CF_ACCESS_JWT || ""
+      }
     });
 
     return new Response(response.body, {

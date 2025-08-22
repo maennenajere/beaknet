@@ -3,9 +3,8 @@ export async function onRequestGet(context) {
     const baseUrl = context.env.PI_BASE_URL;
     const response = await fetch(`${baseUrl}/api/dht/indoor`, {
       headers: {
-        "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
-        "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,
-      },
+        "CF-Access-Jwt-Assertion": context.env.CF_ACCESS_JWT || ""
+      }
     });
     const contentType = response.headers.get("content-type") || "";
     if (!response.ok) {
@@ -22,7 +21,6 @@ export async function onRequestGet(context) {
         "Content-Type": "application/json",
       },
     });
-  
   } catch (err) {
     return new Response(JSON.stringify({
       error: "[api] Failed to fetch indoor sensor data",
