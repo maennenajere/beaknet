@@ -1,0 +1,14 @@
+{
+    "sensorData": "Sensordata",
+    "indoorTemperature": "Inomhustemperatur",
+    "outdoorTemperature": "Utomhustemperatur",
+    "humidity": "Luftfuktighet",
+    "updated": "Uppdaterad",
+    "live": "Live",
+    "offline": "Offline",
+    "videoLoadError": "Videoladdning misslyckades",
+    "indoorSensorError": "Okänd fel i inomhusgivare",
+    "outdoorSensorError": "Okänd fel i utomhusgivare",
+    "indoorFetchError": "Fel vid hämtning av inomhusgivare",
+    "outdoorFetchError": "Fel vid hämtning av utomhusgivare"
+}

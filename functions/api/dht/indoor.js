@@ -22,6 +22,7 @@ export async function onRequestGet(context) {
         "Content-Type": "application/json",
       },
     });
+  
   } catch (err) {
     return new Response(JSON.stringify({
       error: "[api] Failed to fetch indoor sensor data",

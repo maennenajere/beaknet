@@ -1,0 +1,14 @@
+{
+  "sensorData": "Sensor Data",
+  "indoorTemperature": "Indoor Temperature",
+  "outdoorTemperature": "Outdoor Temperature",
+  "humidity": "Humidity",
+  "updated": "Updated",
+  "live": "Live",
+  "offline": "Offline",
+  "videoLoadError": "Video loading failed",
+  "indoorSensorError": "Unknown error in indoor sensor",
+  "outdoorSensorError": "Unknown error in outdoor sensor",
+  "indoorFetchError": "Error fetching indoor sensor",
+  "outdoorFetchError": "Error fetching outdoor sensor"
+}

@@ -1,0 +1,14 @@
+{
+  "sensorData": "Sensoritiedot",
+  "indoorTemperature": "Sisälämpötila",
+  "outdoorTemperature": "Ulkolämpötila",
+  "humidity": "Kosteus",
+  "updated": "Päivitetty",
+  "live": "Live",
+  "offline": "Offline",
+  "videoLoadError": "Videon lataus epäonnistui",
+  "indoorSensorError": "Tuntematon virhe sisäanturissa",
+  "outdoorSensorError": "Tuntematon virhe ulkoanturissa",
+  "indoorFetchError": "Virhe sisäanturin haussa",
+  "outdoorFetchError": "Virhe ulkoanturin haussa"
+}
