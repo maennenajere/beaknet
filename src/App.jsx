@@ -96,7 +96,7 @@ export default function Home() {
       <Header />
       <main className="flex-1 flex flex-col w-full max-w-3xl mx-auto items-center sm:items-start px-4 py-8 pb-20">
         <div className="w-full aspect-video rounded-md overflow-hidden shadow flex flex-col justify-center items-center relative">
-          <img
+          <img className="border-neutral-800 border-2"
             src={videoUrl}
             alt="Live video stream"
             style={{
