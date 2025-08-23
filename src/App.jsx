@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import MaintenancePage from "./components/maintenancePage";
-import ChartDrawer from "./components/chartDrawer";
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
+import { IndoorTempChart, OutdoorTempChart } from './components/tempChart.jsx';
 import { Badge } from "./components/ui/badge";
 import { Card } from "./components/ui/card";
 import { Toaster, toast } from 'sonner';
@@ -67,7 +67,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchSensorData();
-    const interval = setInterval(fetchSensorData, 60000);
+    const interval = setInterval(fetchSensorData, 600000);
     return () => clearInterval(interval);
   }, [fetchSensorData]);
 
@@ -84,15 +84,13 @@ export default function Home() {
     return <MaintenancePage />;
   }
 
-  const videoUrl = "api/stream/video-stream";
-
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <Header />
       <main className="flex-1 flex flex-col w-full max-w-3xl mx-auto items-center sm:items-start px-4 py-8 pb-20">
         <div className="w-full aspect-video rounded-md overflow-hidden shadow flex flex-col justify-center items-center relative">
-          <img className="border-neutral-800 border-2"
-            src={videoUrl}
+          <img className="border-neutral-800 border-2 rounded-lg"
+            src="api/stream/video-stream"
             alt="Live video stream"
             style={{
               width: "100%",
@@ -114,13 +112,12 @@ export default function Home() {
             {isLive ? "Live" : "Offline"}
           </Badge>
         </div>
-
-        <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2 ">Sensoritiedot</h2>
-        <div className="flex flex-col sm:flex-row gap-4 w-full mt-1">
+        <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2">Sensoritiedot</h2>
+        <div className="flex flex-col sm:flex-row gap-4 w-full mt-1 justify-center">
 
           {/* Indoor Card */}
-          <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
-            <div className="px-4 pb-4">
+          <Card className="bg-neutral-800/80 border-neutral-800 text-lg w-full">
+            <div className="px-4">
               <p>
                 <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> {
                   isTempLoading || indoorData.temperature === null
@@ -136,14 +133,17 @@ export default function Home() {
                 }
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                {indoorData.timestamp ? `Päivitetty: ${new Date(indoorData.timestamp).toLocaleString()}` : "Ladataan..."}
+                {indoorData.timestamp ? `Päivitetty: ${new Date(indoorData.timestamp).toLocaleString("fi-FI")}` : "Ladataan..."}
               </p>
+              {/* <div className="mt-4">
+                <IndoorTempChart />
+              </div> */}
             </div>
           </Card>
 
           {/* Outdoor Card */}
-          <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
-            <div className="px-4 pb-4">
+          <Card className=" bg-neutral-800/80 border-neutral-800 text-lg w-full">
+            <div className="px-4">
               <p>
                 <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> {
                   isTempLoading || outdoorData.temperature === null
@@ -159,8 +159,11 @@ export default function Home() {
                 }
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                {outdoorData.timestamp ? `Päivitetty: ${new Date(outdoorData.timestamp).toLocaleString()}` : "Ladataan..."}
+                {outdoorData.timestamp ? `Päivitetty: ${new Date(outdoorData.timestamp).toLocaleString("fi-FI")}` : "Ladataan..."}
               </p>
+              {/* <div className="mt-4">
+                <OutdoorTempChart />
+              </div> */}
             </div>
           </Card>
         </div>

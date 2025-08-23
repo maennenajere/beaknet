@@ -6,7 +6,9 @@ export default function Footer() {
 
     return (
         <footer className="w-full flex items-center justify-center py-4 bg-black text-gray-400 border-t border-gray-800">
-            © {currentYear} Beaky. Kaikki oikeudet pidätetään.
+            <span>© {currentYear} <span className="font-semibold text-white">Beaky</span></span>
+            <span className="hidden sm:inline mx-2">|</span>
+            <span>Kaikki oikeudet pidätetään.</span>
         </footer>
     );
 }

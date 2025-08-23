@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(path.dirname(fileURLToPath(import.meta.url)), "./src"),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://beaknet.eu',
+        changeOrigin: true,
+        secure: true
+      }
+    }
+  }
 })

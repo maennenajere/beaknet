@@ -23,52 +23,62 @@ export function HeaderMenu() {
                 <Menu className="w-7 h-7 text-white cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>Beaky</DropdownMenuLabel>
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        Profile
+                        Lorem ipsum dolor
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        Billing
+                        Lorem ipsum dolor
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        Settings
+                        Lorem ipsum dolor
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        Keyboard shortcuts
+                        Lorem ipsum dolor
                         <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuItem>
+                        Lorem ipsum dolor
+                    </DropdownMenuItem>
                     <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+                        <DropdownMenuSubTrigger>
+                            Lorem ipsum dolor
+                        </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <DropdownMenuItem>Email</DropdownMenuItem>
-                                <DropdownMenuItem>Message</DropdownMenuItem>
+                                <DropdownMenuItem>1</DropdownMenuItem>
+                                <DropdownMenuItem>2</DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>More...</DropdownMenuItem>
+                                <DropdownMenuItem>3</DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuItem>
-                        New Team
+                        Lorem ipsum dolor
                         <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>GitHub</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuItem disabled>API</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="flex justify-center items-center">
-                    <SurveyButton />
+                <DropdownMenuItem>
+                    Lorem ipsum dolor
                 </DropdownMenuItem>
+                <DropdownMenuItem>
+                    Lorem ipsum dolor
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                    Lorem ipsum dolor
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {/* <DropdownMenuItem className="flex justify-center items-center">
+                    <SurveyButton />
+                </DropdownMenuItem> */}
             </DropdownMenuContent>
         </DropdownMenu>
     )
