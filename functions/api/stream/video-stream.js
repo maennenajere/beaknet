@@ -1,7 +1,7 @@
 export async function onRequestGet(context) {
   try {
     const baseUrl = context.env.PI_BASE_URL;
-    const response = await fetch(`${baseUrl}/video`, {
+    const response = await fetch(`${baseUrl}/api/stream`, {
       headers: {
         "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
         "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,

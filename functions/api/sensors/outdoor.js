@@ -1,7 +1,7 @@
 export async function onRequestGet(context) {
   try {
     const baseUrl = context.env.PI_BASE_URL;
-    const response = await fetch(`${baseUrl}/api/dht/indoor`, {
+    const response = await fetch(`${baseUrl}/api/sensors/outdoor`, {
       headers: {
         "CF-Access-Client-Id": context.env.CF_ACCESS_CLIENT_ID,
         "CF-Access-Client-Secret": context.env.CF_ACCESS_CLIENT_SECRET,
@@ -24,7 +24,7 @@ export async function onRequestGet(context) {
     });
   } catch (err) {
     return new Response(JSON.stringify({
-      error: "[api] Failed to fetch indoor sensor data",
+      error: "[api] Failed to fetch outdoor sensor data",
       details: err.message,
     }), { status: 500, headers: { "Content-Type": "application/json" } });
   }

@@ -1,13 +1,8 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback
-} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import MaintenancePage from "./components/maintenancePage";
 import ChartDrawer from "./components/chartDrawer";
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
-import { Skeleton } from "./components/ui/skeleton";
 import { Badge } from "./components/ui/badge";
 import { Card } from "./components/ui/card";
 import { Toaster, toast } from 'sonner';
@@ -32,7 +27,7 @@ export default function Home() {
     setIndoorError(null);
     setOutdoorError(null);
     try {
-      const indoorRes = await fetch("/api/dht/indoor");
+      const indoorRes = await fetch("/api/sensors/indoor");
       if (!indoorRes.ok) {
         const err = await indoorRes.json();
         setIndoorError(err.error || "Tuntematon virhe sisäanturissa");
@@ -50,7 +45,7 @@ export default function Home() {
       setIndoorData({ temperature: null, humidity: null, timestamp: null });
     }
     try {
-      const outdoorRes = await fetch("/api/dht/outdoor");
+      const outdoorRes = await fetch("/api/sensors/outdoor");
       if (!outdoorRes.ok) {
         const err = await outdoorRes.json();
         setOutdoorError(err.error || "Tuntematon virhe ulkoanturissa");
@@ -119,52 +114,56 @@ export default function Home() {
             {isLive ? "Live" : "Offline"}
           </Badge>
         </div>
+
         <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2 ">Sensoritiedot</h2>
         <div className="flex flex-col sm:flex-row gap-4 w-full mt-1">
+
+          {/* Indoor Card */}
           <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
             <div className="px-4 pb-4">
               <p>
                 <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> {
                   isTempLoading || indoorData.temperature === null
-                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
                     : <span className="text-gray-400">{indoorData.temperature}°C</span>
                 }
               </p>
               <p>
                 <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
                   isTempLoading || indoorData.humidity === null
-                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
                     : <span className="text-blue-300">{indoorData.humidity}%</span>
                 }
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                {indoorData.timestamp ? `Päivitetty: ${new Date(indoorData.timestamp).toLocaleString()}` : <Skeleton className="h-[16px] w-[120px] rounded-full inline-block align-middle" />}
+                {indoorData.timestamp ? `Päivitetty: ${new Date(indoorData.timestamp).toLocaleString()}` : "Ladataan..."}
               </p>
             </div>
           </Card>
+
+          {/* Outdoor Card */}
           <Card className="flex-1 bg-neutral-800/80 border-neutral-800">
             <div className="px-4 pb-4">
               <p>
                 <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> {
                   isTempLoading || outdoorData.temperature === null
-                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
                     : <span className="text-gray-400">{outdoorData.temperature}°C</span>
                 }
               </p>
               <p>
                 <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
                   isTempLoading || outdoorData.humidity === null
-                    ? <Skeleton className="h-[20px] w-[60px] rounded-full inline-block align-middle ml-2" />
+                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
                     : <span className="text-blue-300">{outdoorData.humidity}%</span>
                 }
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                {outdoorData.timestamp ? `Päivitetty: ${new Date(outdoorData.timestamp).toLocaleString()}` : <Skeleton className="h-[16px] w-[120px] rounded-full inline-block align-middle" />}
+                {outdoorData.timestamp ? `Päivitetty: ${new Date(outdoorData.timestamp).toLocaleString()}` : "Ladataan..."}
               </p>
             </div>
           </Card>
         </div>
-        <ChartDrawer />
       </main >
       <Footer />
       <Toaster />
