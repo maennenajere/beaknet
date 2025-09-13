@@ -10,5 +10,8 @@
   "indoorSensorError": "Tuntematon virhe sisäanturissa",
   "outdoorSensorError": "Tuntematon virhe ulkoanturissa",
   "indoorFetchError": "Virhe sisäanturin haussa",
-  "outdoorFetchError": "Virhe ulkoanturin haussa"
+  "outdoorFetchError": "Virhe ulkoanturin haussa",
+  "loading": "Ladataan...",
+  "allRightsReserved": "Kaikki oikeudet pidätetään.",
+  "docs.heading": "docs"
 }

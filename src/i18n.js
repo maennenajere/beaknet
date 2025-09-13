@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 import enTranslation from './locales/en/translation.json';
 import fiTranslation from './locales/fi/translation.json';
-import svTranslation from './locales/sv/traslation.json';
+import svTranslation from './locales/sv/translation.json';
 
 
 i18n

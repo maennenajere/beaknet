@@ -10,5 +10,8 @@
   "indoorSensorError": "Unknown error in indoor sensor",
   "outdoorSensorError": "Unknown error in outdoor sensor",
   "indoorFetchError": "Error fetching indoor sensor",
-  "outdoorFetchError": "Error fetching outdoor sensor"
+  "outdoorFetchError": "Error fetching outdoor sensor",
+  "loading": "Loading...",
+  "allRightsReserved": "All rights reserved.",
+  "docs.heading": "docs"
 }

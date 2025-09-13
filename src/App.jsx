@@ -6,8 +6,10 @@ import { IndoorTempChart, OutdoorTempChart } from './components/tempChart.jsx';
 import { Badge } from "./components/ui/badge";
 import { Card } from "./components/ui/card";
 import { Toaster, toast } from 'sonner';
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
+  const { t } = useTranslation();
   const [indoorData, setIndoorData] = useState({ temperature: null, humidity: null });
   const [outdoorData, setOutdoorData] = useState({ temperature: null, humidity: null });
   const [indoorError, setIndoorError] = useState(null);
@@ -98,7 +100,7 @@ export default function Home() {
               objectFit: "cover",
             }}
             onError={() => {
-              showError("Videon lataus epäonnistui");
+              showError("");
               setIsLive(false);
             }}
             onLoad={() => setIsLive(true)}
@@ -112,28 +114,28 @@ export default function Home() {
             {isLive ? "Live" : "Offline"}
           </Badge>
         </div>
-        <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2">Sensoritiedot</h2>
+        <h2 className="text-xl font-semibold mb-1 text-gray-300 px-2">{t("sensorData")}</h2>
         <div className="flex flex-col sm:flex-row gap-4 w-full mt-1 justify-center">
 
           {/* Indoor Card */}
           <Card className="bg-neutral-800/80 border-neutral-800 text-lg w-full">
             <div className="px-4">
               <p>
-                <span className="font-semibold text-gray-300">🌡️ Sisälämpötila:</span> {
+                <span className="font-semibold text-gray-300">🌡️ {t("indoorTemperature")}:</span> {
                   isTempLoading || indoorData.temperature === null
-                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
+                    ? <span className="text-gray-500 animate-pulse">{t("loading")}</span>
                     : <span className="text-gray-400">{indoorData.temperature}°C</span>
                 }
               </p>
               <p>
-                <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
+                <span className="font-semibold text-gray-300">💧 {t("humidity")}:</span> {
                   isTempLoading || indoorData.humidity === null
-                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
+                    ? <span className="text-gray-500 animate-pulse">{t("loading")}</span>
                     : <span className="text-blue-300">{indoorData.humidity}%</span>
                 }
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                {indoorData.timestamp ? `Päivitetty: ${new Date(indoorData.timestamp).toLocaleString("fi-FI")}` : "Ladataan..."}
+                {indoorData.timestamp ? `${t("updated")}: ${new Date(indoorData.timestamp).toLocaleString("fi-FI")}` : t("loading")}
               </p>
               {/* <div className="mt-4">
                 <IndoorTempChart />
@@ -145,21 +147,21 @@ export default function Home() {
           <Card className=" bg-neutral-800/80 border-neutral-800 text-lg w-full">
             <div className="px-4">
               <p>
-                <span className="font-semibold text-gray-300">🌡️ Ulkolämpötila:</span> {
+                <span className="font-semibold text-gray-300">🌡️ {t("outdoorTemperature")}:</span> {
                   isTempLoading || outdoorData.temperature === null
-                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
+                    ? <span className="text-gray-500 animate-pulse">{t("loading")}</span>
                     : <span className="text-gray-400">{outdoorData.temperature}°C</span>
                 }
               </p>
               <p>
-                <span className="font-semibold text-gray-300">💧 Kosteus:</span> {
+                <span className="font-semibold text-gray-300">💧 {t("humidity")}:</span> {
                   isTempLoading || outdoorData.humidity === null
-                    ? <span className="text-gray-500 animate-pulse">Ladataan...</span>
+                    ? <span className="text-gray-500 animate-pulse">{t("loading")}</span>
                     : <span className="text-blue-300">{outdoorData.humidity}%</span>
                 }
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                {outdoorData.timestamp ? `Päivitetty: ${new Date(outdoorData.timestamp).toLocaleString("fi-FI")}` : "Ladataan..."}
+                {outdoorData.timestamp ? `${t("updated")}: ${new Date(outdoorData.timestamp).toLocaleString("fi-FI")}` : t("loading")}
               </p>
               {/* <div className="mt-4">
                 <OutdoorTempChart />

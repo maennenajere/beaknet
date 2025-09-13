@@ -10,5 +10,8 @@
     "indoorSensorError": "Okänd fel i inomhusgivare",
     "outdoorSensorError": "Okänd fel i utomhusgivare",
     "indoorFetchError": "Fel vid hämtning av inomhusgivare",
-    "outdoorFetchError": "Fel vid hämtning av utomhusgivare"
+    "outdoorFetchError": "Fel vid hämtning av utomhusgivare",
+    "loading": "Laddar...",
+    "allRightsReserved": "Alla rättigheter förbehållna.",
+    "docs.heading": "docs"
 }
