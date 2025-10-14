@@ -1,10 +1,10 @@
 import React from 'react';
 import BirdieLW from "../assets/logo/birdieLW.webp";
 import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card"
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 export default function MaintenancePage() {
     return (
@@ -16,16 +16,10 @@ export default function MaintenancePage() {
                 <br />
                 Palaamme pian takaisin linjoille!
             </p>
-            <HoverCard>
-                <HoverCardTrigger className="text-m text-white mb-8 underline underline-offset-4 cursor-pointer">
-                    Mistä oikein on kyse?
-                </HoverCardTrigger>
-                <HoverCardContent className="bg-neutral-900 text-gray-200 p-4 rounded-2xl w-80 sm:w-96 shadow-lg border border-neutral-800">
-                    <p>
-                        Beaky on BeakNet-projektin kurkistusaukko linnunpönttöön, joka on varustettu kameralla ja sensoreilla. Seuraa lintujen elämää ja ympäristöä reaaliajassa.
-                    </p>
-                </HoverCardContent>
-            </HoverCard>
+            <Popover>
+                <PopoverTrigger className="text-m text-white mb-8 underline underline-offset-4 cursor-pointer">Mistä oikein on kyse?</PopoverTrigger>
+                <PopoverContent className="bg-neutral-900 text-gray-200 p-4 rounded-2xl w-80 sm:w-96 shadow-lg border border-neutral-800">Beaky on BeakNet-projektin kurkistusaukko linnunpönttöön, joka on varustettu kameralla ja sensoreilla. Seuraa lintujen elämää ja ympäristöä reaaliajassa.</PopoverContent>
+            </Popover>
         </div>
     );
 }
