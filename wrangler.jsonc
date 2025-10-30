@@ -18,5 +18,13 @@
       "persist": true,
       "invocation_logs": true
     }
-  }
+  },
+
+  "build": {
+    "install_command": "bun install",
+    "command": "bun run build",
+    "cwd": ".",
+    "output_directory": "dist"
+  },
+  "pages_build_output_dir": "dist"
 }
