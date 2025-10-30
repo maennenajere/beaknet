@@ -12,6 +12,7 @@ export default defineConfig({
     },
   },
   server: {
+    fs: { strict: true },
     proxy: {
       '/api': {
         target: 'https://beaknet.eu',

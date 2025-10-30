@@ -16,6 +16,9 @@ package-lock.json
 .env.local
 .env
 
+.dev.vars
+.wrangler/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
