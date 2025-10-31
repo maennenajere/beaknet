@@ -15,7 +15,7 @@ export default defineConfig({
     fs: { strict: true },
     proxy: {
       '/api': {
-        target: 'https://beaknet.eu',
+        target: process.env.VITE_API_TARGET || 'https://beaknet.eu',
         changeOrigin: true,
         secure: true
       }
