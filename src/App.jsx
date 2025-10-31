@@ -24,63 +24,47 @@ export default function Home() {
         });
     }, []);
 
-    const fetchSensorData = useCallback(async () => {
-        setIsTempLoading(true);
-        try {
-            const res = await fetch('/api/temperature/latest');
-            if (!res.ok) throw new Error(`${res.status}`);
+    useEffect(() => {
+        const fetchSensorData = async () => {
+            setIsTempLoading(true);
+            try {
+                const res = await fetch('/api/temperature/latest');
+                if (!res.ok) throw new Error(`${res.status}`);
 
-            const { indoor, outdoor } = await res.json();
-            setIndoorData({
-                temperature: indoor?.temperature?.toFixed(1) ?? null,
-                humidity: indoor?.humidity?.toFixed(1) ?? null,
-                timestamp: indoor?.timestamp ?? null,
-            });
-            setOutdoorData({
-                temperature: outdoor?.temperature?.toFixed(1) ?? null,
-                humidity: outdoor?.humidity?.toFixed(1) ?? null,
-                timestamp: outdoor?.timestamp ?? null,
-            });
+                const data = await res.json();
+                const { indoor, outdoor } = data;
 
-            setSensorError(null);
-        } catch (err) {
-            const message = `Error: (${err.message})`;
-            console.error('[SensorError]', err);
-            setSensorError(message);
-            showError(message);
-        } finally {
-            setIsTempLoading(false);
-        }
+                if (indoor?.timestamp) {
+                    setLastUpdate(new Date(indoor.timestamp));
+                }
+
+                setIndoorData({
+                    temperature: indoor?.temperature?.toFixed(1) ?? null,
+                    humidity: indoor?.humidity?.toFixed(1) ?? null,
+                    timestamp: indoor?.timestamp ?? null,
+                });
+                setOutdoorData({
+                    temperature: outdoor?.temperature?.toFixed(1) ?? null,
+                    humidity: outdoor?.humidity?.toFixed(1) ?? null,
+                    timestamp: outdoor?.timestamp ?? null,
+                });
+
+                setSensorError(null);
+            } catch (err) {
+                const message = `Error: (${err.message})`;
+                console.error('[SensorError]', err);
+                setSensorError(message);
+                showError(message);
+            } finally {
+                setIsTempLoading(false);
+            }
+        };
+
+        fetchSensorData();
+        const interval = setInterval(fetchSensorData, 300000);
+        return () => clearInterval(interval);
     }, [showError]);
 
-
-    useEffect(() => {
-        fetchSensorData();
-        const interval = setInterval(fetchSensorData, 600000);
-        return () => clearInterval(interval);
-    }, [fetchSensorData]);
-
-    useEffect(() => {
-        if (indoorData.timestamp) setLastUpdate(new Date(indoorData.timestamp));
-    }, [indoorData.timestamp]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (lastUpdate) {
-                const diffMs = Date.now() - lastUpdate.getTime();
-                const diffMin = Math.floor(diffMs / 60000);
-                document.title = `Päivitetty ${diffMin} min sitten`;
-            }
-        }, 60000);
-        return () => clearInterval(interval);
-    }, [lastUpdate]);
-
-    const getHeartbeat = () => {
-        if (!lastUpdate) return "⚫";
-        const diffMs = Date.now() - lastUpdate.getTime();
-        const diffMin = Math.floor(diffMs / 60000);
-        return diffMin < 10 ? "🟢" : "🔴";
-    };
 
     const isMaintenance = import.meta.env.VITE_MAINTENANCE_MODE === "true";
     if (isMaintenance) {
@@ -106,18 +90,13 @@ export default function Home() {
                     />
                 </div>
 
-                <div className="w-full flex mt-2 mb-5 items-center gap-3">
+                <div className="w-full flex mt-2 mb-5 items-center justify-between">
                     <Badge
                         variant={isLive ? "default" : "destructive"}
                         className={isLive ? "bg-green-600 text-white" : ""}
                     >
                         {isLive ? "Live" : "Offline"}
                     </Badge>
-
-                    <span className="text-xs text-gray-400 flex items-center gap-1">
-                        {getHeartbeat()} Päivitetty{" "}
-                        {lastUpdate ? new Date(lastUpdate).toLocaleTimeString("fi-FI") : "—"}
-                    </span>
                 </div>
 
                 {/* Sensor cards */}
