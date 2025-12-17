@@ -18,7 +18,12 @@ export default function MaintenancePage() {
             </p>
             <Popover>
                 <PopoverTrigger className="text-m text-white mb-8 underline underline-offset-4 cursor-pointer">Mistä oikein on kyse?</PopoverTrigger>
-                <PopoverContent className="bg-neutral-900 text-gray-200 p-4 rounded-2xl w-80 sm:w-96 shadow-lg border border-neutral-800">Beaky on BeakNet-projektin kurkistusaukko linnunpönttöön, joka on varustettu kameralla ja sensoreilla. Seuraa lintujen elämää ja ympäristöä reaaliajassa.</PopoverContent>
+                <PopoverContent className="bg-neutral-900 text-gray-200 p-4 rounded-2xl w-80 sm:w-96 shadow-lg border border-neutral-800">
+                    <p>Beaky on BeakNet-projektin kurkistusaukko linnunpönttöön, joka on varustettu kameralla ja sensoreilla. Seuraa lintujen elämää ja ympäristöä reaaliajassa.</p>
+                    <p className="mt-2">
+                        Demokuva: <a href="https://hillnose.xyz/beaknet-demo" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline underline-offset-4 ml-1">Katso tästä</a>
+                    </p>
+                </PopoverContent>
             </Popover>
         </div>
     );
