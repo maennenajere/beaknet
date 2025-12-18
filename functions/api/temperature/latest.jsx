@@ -1,24 +1,29 @@
-export async function onRequestGet() {
+export async function onRequestGet({ env }) {
     try {
-        const response = await fetch("https://beaknet-data.hilli.workers.dev/latest");
+        const response = await fetch(env.BEAKNET_DATA_API);
 
         if (!response.ok) {
-            throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
+            throw new Error(`Fetch failed: ${response.status}`);
         }
 
         const data = await response.json();
 
         return new Response(JSON.stringify(data), {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "public, max-age=30, stale-while-revalidate=30",
+            },
         });
 
-    } catch (err) {
+    } catch {
         return new Response(JSON.stringify({
             error: "[api] Failed to fetch latest sensor data",
-            details: err.message,
         }), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-store",
+            },
         });
     }
 }
